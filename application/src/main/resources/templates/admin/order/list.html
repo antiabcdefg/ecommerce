@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" th:href="@{/favicon.ico}" type="image/x-icon"/>
+    <link href="/css/order.css" th:href="@{/css/order.css}" rel="stylesheet">
+    <link href="/css/navi.css" th:href="@{/css/navi.css}" rel="stylesheet">
+    <link href="/css/footer.css" th:href="@{/css/footer.css}" rel="stylesheet">
+    <title>Manage order list</title>
+</head>
+<body>
+<div class="container">
+    <div th:insert="~{navbar::navbar(true, true, true)}"></div>
+    <div class="order-content">
+        <hr class="hr-red">
+        <h3 class="order-title" >All Order History</h3>
+        <div class="order-container" th:each="order : ${orders}">
+            <div class="order-left">
+                <p th:text="${order.id}"></p>
+                <p th:text="${order.createdAt}"></p>
+                <p th:text="${order.status}"></p>
+                <p th:text="'CustomerId: '+${order.customerId}"></p>
+
+                <form th:if="${order.status}=='NEW'" role="form" th:action="@{/admin/order/complete}"
+                      th:object="${order}"
+                      method="post">
+                    <input type="hidden" th:value="${order.id}" name="id"/>
+                    <button class="small_btn" type="submit">Mark Completed</button>
+                </form>
+
+            </div>
+
+            <div class="order-right">
+                <div class="item-container" th:each="item : ${order.items}" th:onClick="'location.href=\'/application/admin/item/detail/'+${item.itemId}+'\''">
+                    <img class="img-th" th:src="${item.photoAddress}" th:alt="${item.name}"/>
+                    <div class="item-content">
+                        <p th:text="${item.name}"></p>
+                        <p th:text="'Price: '+${item.price}"></p>
+                        <p th:text="'Quantity: '+${item.quantity}"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div th:insert="~{footer::footer}"></div>
+</div>
+</body>
+</html>

@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: application
+
+server:
+  port: 18081
+  servlet:
+    context-path: /${spring.application.name}
+
+ecommerce:
+  api:
+    rootUrl: http://localhost:18082/api/
+
+admin:
+  name: admin
+  password: admin
+

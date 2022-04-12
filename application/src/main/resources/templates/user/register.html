@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" th:href="@{/favicon.ico}" type="image/x-icon"/>
+    <link href="/css/register.css" th:href="@{/css/register.css}" rel="stylesheet">
+    <link href="/css/navi.css" th:href="@{/css/navi.css}" rel="stylesheet">
+    <link href="/css/footer.css" th:href="@{/css/footer.css}" rel="stylesheet">
+    <title>Register new user</title>
+</head>
+<body>
+<div class="container">
+    <div th:insert="~{navbar::navbar(false, false, false)}"></div>
+    <h1 class="login">Register new user</h1>
+    <div class="standard">
+        <form class="login_form" id="login_form" role="form" th:action="@{/user/toRegister}" th:object="${user}"
+              method="post">
+            <div class="row">
+                <input type="text" name="email" placeholder="Email" required="required" autofocus="autofocus"
+                       th:field="*{email}"/>
+            </div>
+            <div class="row">
+                <input type="password" name="password" id="password" required="required" placeholder="Password"
+                       th:field="*{password}"/> <br/>
+            </div>
+            <div class="row">
+                <input type="password" name="password2" id="password2" required="required"
+                       placeholder="Confirm Password"/> <br/>
+            </div>
+            <div class="row">
+                <input type="text" name="firstName" required="required" placeholder="First Name"
+                       th:field="*{firstName}"/> <br/>
+            </div>
+            <div class="row">
+                <input type="text" name="lastName" required="required" placeholder="Last Name"
+                       th:field="*{lastName}"/> <br/>
+            </div>
+            <div class="row">
+                <input type="text" name="address" required="required" placeholder="Address"
+                       th:field="*{address}"/> <br/>
+            </div>
+            <div class="row">
+                <input type="text" name="zipCode" required="required" placeholder="Zip Code"
+                       th:field="*{zipCode}"/> <br/>
+            </div>
+            <div class="row">
+                <input type="tel" name="phone" required="required" placeholder="Phone Number"
+                       th:field="*{phone}"/> <br/>
+            </div>
+            <div class="row button">
+                <input type="submit" value="Register" onclick="check()">
+            </div>
+        </form>
+    </div>
+    <div th:insert="~{footer::footer}"></div>
+</div>
+<script>
+    function check() {
+        var password = document.getElementById("password");
+        var password2 = document.getElementById("password2");
+        var login_form = document.getElementById("login_form");
+        if (password.value === password2.value) login_form.submit;
+    }
+</script>
+</body>
+</html>

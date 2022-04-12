@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" th:href="@{/favicon.ico}" type="image/x-icon"/>
+    <link href="../static/css/navi.css" th:href="@{/css/navi.css}" rel="stylesheet">
+</head>
+<body>
+<nav class="navi" th:fragment="navbar(isAdmin,isDisplay,isLogout)">
+    <a class="nav_logo" sec:authorize="!hasRole('ROLE_ADMIN')" th:href="@{/item/list}">
+        <img th:src="@{/images/logo.svg}"/>
+    </a>
+    <a class="nav_logo" sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/admin/item/list}">
+        <img th:src="@{/images/logo.svg}"/>
+    </a>
+
+    <div th:if="${isDisplay}">
+
+        <div th:if="${!isLogout}" sec:authorize="!hasRole('ROLE_ADMIN')" class="ele">
+            <a th:href="@{/user/profile}">
+                <img th:src="@{/images/profile.svg}"
+                     style="margin-top:8px; margin-left: 10px; margin-right: 10px; height: 30px;"
+                     sec:authorize="isAuthenticated()">
+            </a>
+        </div>
+
+        <a class="ele" th:if="${isLogout}" th:href="@{/logout}">
+            <img th:src="@{/images/login.svg}"
+                 style="margin-top:5px; margin-left: 10px; margin-right: 10px; height: 35px;transform: scaleX(-1)"
+                 sec:authorize="isAuthenticated()">
+            <!--            <button class="nav_btn common_btn" type="submit" sec:authorize="isAuthenticated()">Logout</button>-->
+        </a>
+
+        <div sec:authorize="hasRole('ROLE_ADMIN')" class="ele">
+            <input type="button" class="nav_btn common_btn" name="Manage Orders" value="Manage Orders"
+                   th:attr="onClick='location.href=\''+@{/admin/order/list}+'\''">
+        </div>
+        <div sec:authorize="hasRole('ROLE_ADMIN')" class="ele">
+            <input type="button" class="nav_btn common_btn" name="Add New Product" value="Add New Product"
+                   th:attr="onClick='location.href=\''+@{/admin/item/new}+'\''">
+        </div>
+
+        <form class="ele" sec:authorize="!hasRole('ROLE_ADMIN')" method="get" th:action="@{/cart}">
+            <span style="display: none" id="customer_id" name="customer_id" sec:authorize="isAuthenticated()"
+                  sec:authentication="name"></span>
+            <input style="background-color: white; margin-top: 2px; margin-left: 10px; margin-right: 10px; height: 40px;"
+                   type="image" class="nav_btn common_btn" th:src="@{/images/cart.svg}"
+                   sec:authorize="isAuthenticated()">
+            <div class="divright" id="my-divright" sec:authorize="isAuthenticated()"></div>
+        </form>
+
+        <a class="ele" th:href="@{/user/login}">
+            <img th:src="@{/images/login.svg}"
+                 style="margin-top:5px; margin-left: 10px; margin-right: 10px; height: 35px;"
+                 sec:authorize="!isAuthenticated()">
+            <!--            <button class="nav_btn" sec:authorize="!isAuthenticated()">Login</button>-->
+        </a>
+
+        <div class="search">
+            <input type="text" id="search" placeholder="Search Item..">
+            <a id="search-btn">
+                <img id="search-img" th:src="@{/images/search.svg}" style="vertical-align: middle;margin-left: -35px; height: 25px;"
+                     onclick="process()">
+            </a>
+        </div>
+
+    </div>
+
+    <script defer>
+        document.getElementById("search").addEventListener("keyup", function (event) {
+            event.preventDefault();
+            if (event.keyCode === 13) {
+                document.getElementById("search-img").click();
+            }
+        });
+
+        function process() {
+            if (document.getElementById("search").value !== "")
+                document.getElementById("search-btn").href = "http://localhost:18081/application/item/se/" + document.getElementById("search").value;
+        }
+
+        +document.getElementById("search-btn").value;
+        var username = document.getElementById("customer_id").innerText;
+        console.log(username)
+        fetch("http://localhost:18082/api/users/email/" + username, {
+            method: "GET"
+        }).then(res => res.json()).then(data => {
+            fetch("http://localhost:18082/api/cart/user/" + data.id, {
+                method: "GET"
+            }).then(res => res.json())
+                .then(data => {
+                    document.getElementById("my-divright").innerText = Object.keys(data.cartItems).length;
+                    document.getElementById("my-divright").style.display = "block";
+                }).catch();
+        }).catch(error => {
+            console.log(error)
+        });
+
+    </script>
+</nav>
+</body>
+</html>

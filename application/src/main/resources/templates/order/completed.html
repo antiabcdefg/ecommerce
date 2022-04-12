@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" th:href="@{/favicon.ico}" type="image/x-icon"/>
+    <link href="/css/navi.css" th:href="@{/css/navi.css}" rel="stylesheet">
+    <link href="/css/order.css" th:href="@{/css/order.css}" rel="stylesheet">
+    <link href="/css/footer.css" th:href="@{/css/footer.css}" rel="stylesheet">
+    <title>Confirm your order</title>
+</head>
+<body>
+<div class="container">
+    <div th:insert="~{navbar::navbar(false, true, false)}"></div>
+    <div style="margin: 10px;display: block">
+        <div style="display: block;align-content: center;text-align: center">
+            <h1>Thank you! </h1>
+        </div>
+        <div class="order-content">
+            <div class="order-container">
+                <div class="order-left">
+                    <p th:text="${order.createdAt}"></p>
+                    <p th:text="'OrderId: '+${order.id}"></p>
+                </div>
+                <div class="order-right">
+                    <div class="item-container" th:each="item : ${order.items}">
+                        <img class="img-th" th:src="${item.photoAddress}" th:alt="${item.name}"/>
+                        <div class="item-content">
+                            <p th:text="${item.name}"></p>
+                            <p th:text="'Price: '+${item.price}"></p>
+                            <p th:text="'Quantity: '+${item.quantity}"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+        <div style="display: block;align-content: center;text-align: center">
+            <a target="_top" th:href="@{'/item/list/'}" style="font-size: 30px">
+                Continue Shopping
+            </a>
+        </div>
+    </div>
+    <div th:insert="~{footer::footer}"></div>
+</div>
+</body>
+</html>

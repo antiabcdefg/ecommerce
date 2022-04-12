@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" th:href="@{/favicon.ico}" type="image/x-icon"/>
+    <link href="/css/order.css" th:href="@{/css/order.css}" rel="stylesheet">
+    <link href="/css/cart.css" th:href="@{/css/cart.css}" rel="stylesheet">
+    <link href="/css/navi.css" th:href="@{/css/navi.css}" rel="stylesheet">
+    <link href="/css/footer.css" th:href="@{/css/footer.css}" rel="stylesheet">
+    <title>Your shopping cart</title>
+</head>
+<body>
+<div class="container">
+    <div th:insert="~{navbar::navbar(false, true, false)}"></div>
+    <div style="margin: 10px;display: block">
+        <h2>Shopping Cart</h2>
+    </div>
+    <div class="whole-container">
+        <div class="item" th:each="item : ${items}">
+            <img class="img-full" th:src="${item.photoAddress}" th:alt="${item.name}"/>
+            <div class="item-content">
+                <h2 th:text="${item.name}"></h2>
+                <p th:text="'Price: '+${#numbers.formatInteger(item.price, 2, 'COMMA')}+' JPY'"></p>
+
+                <div class="add_to_cat">
+                    <span class="unit">Number&nbsp; </span>
+                    <input type="number" size="6" th:value="${item.quantity}" min="0"
+                           th:max="${temp_items.get(item.getItemId())}"
+                           th:onchange="price_change([[${item.customerId}]],[[${item.itemId}]],[[${item.name}]],[[${item.description}]],[[${item.photoAddress}]],[[${item.price}]],this.value)"
+                           name="quantity" id="quantity">
+                </div>
+                <p th:text="'Total Price: '+${#numbers.formatInteger(item.price*item.quantity, 2, 'COMMA')}+' JPY'"></p>
+            </div>
+        </div>
+        <div class="total">
+            <h2 th:text="'Subtotal: '+${#numbers.formatInteger(total, 1, 'COMMA')}+' JPY'"></h2>
+            <a th:href="@{/item/list}">
+                <button class="common_btn">Continue Shopping</button>
+            </a>
+            <a th:href="@{/order/add}">
+                <button class="common_btn" th:disabled="${items.isEmpty()}?1:0">Go To Checkout</button>
+            </a>
+        </div>
+    </div>
+    <div th:insert="~{footer::footer}"></div>
+</div>
+</body>
+<script>
+    function price_change(customerId, itemid, name, description, photoAddress, price, quantity) {
+        let data = new FormData();
+        data.append('customerId', customerId);
+        data.append('itemId', itemid);
+        data.append('name', name);
+        data.append('description', description);
+        data.append('photoAddress', photoAddress);
+        data.append('price', price);
+        data.append('quantity', quantity);
+
+        fetch("http://localhost:18081/application/cart/change", {
+            method: 'POST',
+            mode: 'no-cors',
+            credentials: 'same-origin',
+            body: data,
+        })
+            .then(response => console.log(response))
+            .then(data => {
+                location.reload();
+            })
+            .catch((error) => {
+                location.reload();
+                console.error('Error:', error);
+            });
+
+    }
+
+</script>
+</html>

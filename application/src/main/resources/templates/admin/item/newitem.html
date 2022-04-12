@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" th:href="@{/favicon.ico}" type="image/x-icon"/>
+    <link href="/css/order.css" th:href="@{/css/order.css}" rel="stylesheet">
+    <link href="/css/admin_product_detail.css" th:href="@{/css/admin_product_detail.css}" rel="stylesheet">
+    <link href="/css/navi.css" th:href="@{/css/navi.css}" rel="stylesheet">
+    <link href="/css/footer.css" th:href="@{/css/footer.css}" rel="stylesheet">
+    <title>Create a new product</title>
+</head>
+<body>
+<div class="container">
+    <div th:insert="~{navbar::navbar(true, true, true)}"></div>
+    <h2>New Product Information</h2>
+    <form role="form" action="/admin/item/submit" th:action="@{/admin/item/submit}" th:object="${item}" method="post">
+        <table cellspacing="5" cellpadding="5" border="0">
+            <tbody>
+            <tr>
+                <td>Item Name</td>
+                <td><input type="text" name="name" th:field="*{name}" required="required"/></td>
+                <p class="alert alert-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">
+            </tr>
+            <tr>
+                <td>Description</td>
+                <td><input type="text" name="description" th:field="${item.description}" required="required"/></td>
+                <p class="alert alert-danger" th:if="${#fields.hasErrors('description')}" th:errors="*{description}">
+            </tr>
+            <tr>
+                <td>Photo Address</td>
+                <td><input type="text" name="photoAddress" th:field="${item.photoAddress}" required="required"/></td>
+                <p class="alert alert-danger" th:if="${#fields.hasErrors('photoAddress')}" th:errors="*{photoAddress}">
+            </tr>
+            <tr>
+                <td>Price</td>
+                <td><input type="number" name="price" min="0" value="0" th:field="${item.price}" required="required"/> 円
+                </td>
+                <p class="alert alert-danger" th:if="${#fields.hasErrors('price')}" th:errors="*{price}">
+            </tr>
+            <tr>
+                <td>Inventory Count</td>
+                <td><input type="number" name="inventoryCount" min="0" max="1000" value="0"
+                           th:field="${item.inventoryCount}" required="required"/></td>
+            </tr>
+            <tr>
+                <td>Enabled?</td>
+                <td>
+                    <select name="enabled" th:field="${item.enabled}" required="required">
+                        <option value="1" selected>Yes</option>
+                        <option value="0">No</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td><input class="common_btn" type="submit" value="Submit"></td>
+            </tr>
+            </tbody>
+        </table>
+    </form>
+    <div th:insert="~{footer::footer}"></div>
+</div>
+</body>
+</html>

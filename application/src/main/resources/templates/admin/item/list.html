@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" th:href="@{/favicon.ico}" type="image/x-icon"/>
+    <link href="/css/product_list.css" th:href="@{/css/product_list.css}" rel="stylesheet">
+    <link href="/css/navi.css" th:href="@{/css/navi.css}" rel="stylesheet">
+    <link href="/css/footer.css" th:href="@{/css/footer.css}" rel="stylesheet">
+    <title>Manage item list</title>
+</head>
+<body>
+<div class="container">
+    <div th:insert="~{navbar::navbar(true, true, true)}"></div>
+    <div>
+        <h2>Manage Your Shop</h2>
+    </div>
+
+    <div class="dui-container main">
+        <div th:each="item : ${items}">
+            <div class="item-container">
+                <a target="_top" th:href="@{'/admin/item/detail/' + ${item.itemId}}">
+                    <div class="image">
+                        <img class="img-item-th" th:src="${item.photoAddress}" th:alt="${item.name}">
+                    </div>
+                    <div class="content title">
+                        <h2 th:text="${item.inventoryCount>0}?${item.name}:${item.name}+' [Sold out]'"/>
+                    </div>
+                    <div class="content description">
+                        <span class="price" th:text="${#numbers.formatInteger(item.price, 2, 'COMMA')}+'JPY'"/><span>
+                    <span class="with-help">Free Delivery</span>
+                    </div>
+                    <div class="content points">
+                        <span>31point(Double)</span>
+                    </div>
+                    <div class="content review">
+                        <a class="dui-rating-filter _link">
+                            <span class="score">4.39</span> <span class="legend">(31)</span>
+                        </a>
+                    </div>
+                    <div class="content">
+                        <div class="cashless _link" title="キャッシュレス5％還元対象">
+                            <img src="https://r.r10s.jp/com/assets/components/searchResultItem/images/cashless.svg">
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div th:insert="~{footer::footer}"></div>
+</div>
+</body>
+</html>

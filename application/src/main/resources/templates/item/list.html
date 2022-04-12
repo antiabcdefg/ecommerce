@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no">
+    <link rel="icon" th:href="@{/favicon.ico}" type="image/x-icon"/>
+    <link href="/css/product_list.css" th:href="@{/css/product_list.css}" rel="stylesheet">
+    <link href="/css/navi.css" th:href="@{/css/navi.css}" rel="stylesheet">
+    <link href="/css/footer.css" th:href="@{/css/footer.css}" rel="stylesheet">
+    <title>Shopping is Entertainment!</title>
+</head>
+<body>
+<div class="container">
+    <div th:insert="~{navbar::navbar(false, true, false)}"></div>
+    <div class="dui-container main">
+        <div class="cart-float">
+            <span style="display: none" id="customer_id" name="customer_id" sec:authorize="isAuthenticated()"
+                  sec:authentication="name"></span>
+            <img th:src="@{/images/cart.svg}" style="height: 50px;width: 50px">
+            <div class="divright2" id="my-divright2">0</div>
+        </div>
+        <div th:each="item : ${items}">
+            <div class="item-container">
+                <div class="mask" th:if="${item.enabled==false}">
+                    <div class="pop_up" style="text-align: center; font-size: 42px;">Disabled</div>
+                </div>
+                <a target="_top" th:href="@{'/item/detail/' + ${item.itemId}}">
+                    <div class="image">
+                        <img class="img-item-th" th:src="${item.photoAddress}" th:alt="${item.name}">
+                    </div>
+                    <div class="content title">
+                        <h2 th:text="${item.inventoryCount>0}?${item.name}:${item.name}+' [Sold out]'"/>
+                    </div>
+                    <div class="content description">
+                        <span class="price" th:text="${#numbers.formatInteger(item.price, 2, 'COMMA')}+'JPY'"/><span>
+                    <span class="with-help">Free Delivery</span>
+                    </div>
+                    <div class="content points">
+                        <span>31 points(Double)</span>
+                    </div>
+                    <div class="content review">
+                        <a class="dui-rating-filter _link">
+                            <span class="score">4.5</span>
+                        </a>
+                    </div>
+                    <div class="content">
+                        <div class="cashless _link" title="キャッシュレス5％還元対象">
+                            <img src="https://r.r10s.jp/com/assets/components/searchResultItem/images/cashless.svg">
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+    <p class="like">Hot product!!!</p>
+    <div class="like-container">
+        <div class="like-item" th:each="h :${hot}">
+            <a th:href="@{/item/detail}+'/'+${h.itemId}">
+                <img class="like-img" th:src="${h.photoAddress}"/>
+            </a>
+        </div>
+    </div>
+    <div th:insert="~{footer::footer}"></div>
+</div>
+</body>
+<script>
+    var username = document.getElementById("customer_id").innerText;
+    fetch("http://localhost:18082/api/users/email/" + username, {
+        method: "GET"
+    }).then(res => res.json()).then(data => {
+        fetch("http://localhost:18082/api/cart/user/" + data.id, {
+            method: "GET"
+        }).then(res => res.json())
+            .then(data => {
+                document.getElementById("my-divright2").innerText = Object.keys(data.cartItems).length;
+                document.getElementById("my-divright2").style.display = "block";
+            }).catch();
+    }).catch(error => {
+        console.log(error)
+    });
+</script>
+</html>

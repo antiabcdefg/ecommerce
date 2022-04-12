@@ -1,0 +1,199 @@
+
+.order-content {
+    display: block;
+}
+
+.order-title {
+    margin: 20px auto;
+    width: 850px;
+    /*height: 50px;*/
+    text-align: center;
+    /*background: #f4f4f4;*/
+    display: grid;
+    align-content: center;
+}
+
+.hr-red {
+    margin-top: 20px;
+    border: 0.5px solid #BF0000;
+}
+
+.order-container {
+    width: 800px;
+    margin: 10px auto;
+    padding: 5px;
+    background-color: ghostwhite;
+    border-radius: 10px;
+    display: flex;
+}
+
+.order-left {
+    flex: 1;
+    padding: 20px;
+}
+
+.order-right {
+    flex: 3;
+}
+
+.item-container {
+    display: flex;
+    width: 100%;
+}
+
+.item-container:hover {
+    background-color: white;
+}
+
+p {
+    margin: 5px 0px 5px 0px;
+}
+
+.img-th {
+    margin: 10px;
+    width: 100px;
+    height: 100px;
+}
+
+.item-content {
+    margin: 10px 0px 10px 15px;
+    flex: 1;
+    display: grid;
+    align-content: start;
+    width: 90px;
+}
+
+
+.bug-op {
+    width: 95px;
+    border-radius: 5px;
+    color: white;
+    background-color: #BF0000;
+    text-decoration: none;
+    font-size: 15px;
+    border: none;
+    padding: 5px;
+    margin-top: 8px;
+    margin-right: 10px;
+}
+
+.user-content {
+    margin: 10px auto;
+    width: 300px;
+}
+
+.content-span {
+    margin: 5px 0px 5px 0px;
+}
+
+.small_btn {
+    height: 30px;
+    border-radius: 5px;
+    color: white;
+    background-color: #BF0000;
+    text-decoration: none;
+    font-size: 15px;
+    border: none;
+}
+
+.order-empty {
+    text-align: center;
+}
+
+.no-order {
+    margin: 20px;
+    font-size: 20px;
+}
+
+.review-content {
+    text-align: center;
+    width: 550px;
+    margin: 50px auto;
+}
+
+.rating {
+    margin: 10px;
+}
+
+.review {
+    display: block;
+    height: 200px;
+    margin: 10px;
+    padding: 20px;
+    width: calc(100% - 20px);
+    border-radius: 5px;
+    border: 0.5px solid #BF0000;
+}
+
+.sub-btn {
+    margin: 10px;
+}
+
+.reviews {
+    margin: 20px 0px 0px 0px;
+    width: 500px;
+    word-wrap: break-word;
+    padding: 5px;
+    background-color: ghostwhite;
+    border-radius: 5px;
+}
+
+.p-review {
+    margin-left: 4px;
+    margin-top: 20px;
+}
+
+.p-reviewer {
+    margin-left: 4px;
+    font-size: 20px;
+}
+
+.rate{
+    display: inline-block;
+    border: 0;
+    color: #b0afaf;
+    vertical-align: middle;
+}
+
+.rate > input{
+    display: none;
+}
+
+.rate > label {
+    float: right;
+}
+
+.rate > label:before {
+    display: inline-block;
+    font-size: 1.1rem;
+    padding: .3rem .2rem;
+    margin: 0;
+    cursor: pointer;
+    font-family: FontAwesome;
+    content: "\f005 ";
+}
+
+.rate .half:before {
+    content: "\f089 ";
+    position: absolute;
+    padding-right: 0;
+}
+
+input:checked ~ label,
+label:hover, label:hover ~ label {
+    color: darkorange;
+}
+
+input:checked + label:hover, input:checked ~ label:hover,
+input:checked ~ label:hover ~ label,
+label:hover ~ input:checked ~ label {
+    color: orange;
+}
+
+
+
+
+
+
+
+

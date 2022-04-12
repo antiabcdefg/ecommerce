@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" th:href="@{/favicon.ico}" type="image/x-icon"/>
+    <link href="/css/login.css" th:href="@{/css/login.css}" rel="stylesheet">
+    <link href="/css/navi.css" th:href="@{/css/navi.css}" rel="stylesheet">
+    <link href="/css/footer.css" th:href="@{/css/footer.css}" rel="stylesheet">
+    <title>Login</title>
+</head>
+<body>
+<div class="container">
+    <div th:insert="~{navbar::navbar(false, false, false)}"></div>
+    <div class="login-container">
+        <h1 class="login">Login</h1>
+        <div class="standard">
+            <form class="login_form" role="form" th:object="${user}" th:action="@{/user/login}" th:method="post">
+                <div class="alert" th:if="${param.error}">
+                    <span th:text="${session['SPRING_SECURITY_LAST_EXCEPTION'].message}"></span>
+                </div>
+                <div class="row">
+                    <input type="text" name="email" th:value="${user.email}" placeholder="Username" required="required"
+                           autofocus="autofocus"/>
+                </div>
+                <div class="row">
+                    <input type="password" name="password" th:value="${user.password}" required="required"
+                           placeholder="Password"/>
+                </div>
+                <div style="margin-bottom: 10px">
+                    <a th:href="@{/user/register}">Not a user? Register</a>
+                </div>
+                <div class="row">
+                    <button class="sub" type="submit">Login</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div th:insert="~{footer::footer}"></div>
+</div>
+</body>
+</html>

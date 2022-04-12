@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" th:href="@{/favicon.ico}" type="image/x-icon"/>
+    <link href="/css/product_list.css" th:href="@{/css/product_list.css}" rel="stylesheet">
+    <link href="/css/product_detail.css" th:href="@{/css/product_detail.css}" rel="stylesheet">
+    <link href="/css/order.css" th:href="@{/css/order.css}" rel="stylesheet">
+    <link href="/css/navi.css" th:href="@{/css/navi.css}" rel="stylesheet">
+    <link href="/css/footer.css" th:href="@{/css/footer.css}" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" rel="stylesheet"/>
+    <title>Product details</title>
+</head>
+<body>
+<div class="container">
+    <div th:insert="~{navbar::navbar(false, true, false)}"></div>
+    <div class="cart-float">
+            <span style="display: none" id="customer_id" name="customer_id" sec:authorize="isAuthenticated()"
+                  sec:authentication="name"></span>
+        <img th:src="@{/images/cart.svg}" style="height: 50px;width: 50px">
+        <div class="divright2" id="my-divright2">0</div>
+    </div>
+    <div class="item">
+        <div class="img-container">
+            <img class="img-full" th:src="${item.photoAddress}" th:alt="${item.name}"/>
+            <div class="mask" th:if="${item.enabled==false}">
+                <div class="pop_up" style="text-align: center; font-size: 42px;">Disabled</div>
+            </div>
+        </div>
+        <div class="item-content">
+            <h2 th:text="${item.inventoryCount>0}?${item.name}:${item.name}+' [Sold out]'"/>
+            <!--            <p th:text="'ItemNo '+${item.itemId}"></p>-->
+            <p th:text="'Description: '+${item.description}"></p>
+            <span>Price: </span>
+            <p class="price" th:text="${#numbers.formatInteger(item.price, 2, 'COMMA')}+' JPY (tax included)'"></p>
+            <span class="points">31 points(Double)</span>
+            <div class="add_to_cat">
+                <form role="form" action="/cart/add" th:action="@{/cart/add}" method="post">
+                    <span class="unit">Number&nbsp; </span>
+                    <input type="number" size="4" name="quantity" id="quantity" th:value="${item.inventoryCount>0}?1:0"
+                           th:min="${item.inventoryCount>0}?1:0" th:max="${item.inventoryCount}">
+                    <p>
+                        <input type="submit" class="common_btn"
+                               th:disabled="${item.inventoryCount>0&&item.enabled==true}?0:disabled"
+                               value="Add To Cart">
+                    </p>
+                    <input th:value="${item.itemId}" type="hidden" name="itemId">
+                    <input th:value="${item.name}" type="hidden" name="name">
+                    <input th:value="${item.description}" type="hidden" name="description">
+                    <input th:value="${item.price}" type="hidden" name="price">
+                    <input th:value="${item.photoAddress}" type="hidden" name="photoAddress">
+                </form>
+            </div>
+
+            <div th:each="re :${reviews}">
+                <div class="reviews" th:if="${re.itemId==item.itemId}">
+                    <p class="p-reviewer" th:text="${re.cusName}"></p>
+
+                    <div class="rate">
+                        <input type="radio" th:id="${re.id}+'star5'" th:name="${re.id}+'rating'" value="5"
+                               th:checked="${re.rating==5}?1:0"/>
+                        <label th:for="${re.id}+'star5'"></label>
+                        <input type="radio" th:id="${re.id}+'star4.5'" th:name="${re.id}+'rating'" value="4.5"
+                               th:checked="${re.rating==4.5}?1:0"/>
+                        <label th:for="${re.id}+'star4.5'" class="half"></label>
+                        <input type="radio" th:id="${re.id}+'star4'" th:name="${re.id}+'rating'" value="4"
+                               th:checked="${re.rating==4}?1:0"/>
+                        <label th:for="${re.id}+'star4'"></label>
+                        <input type="radio" th:id="${re.id}+'star3.5'" th:name="${re.id}+'rating'" value="3.5"
+                               th:checked="${re.rating==3.5}?1:0"/>
+                        <label th:for="${re.id}+'star3.5'" class="half"></label>
+                        <input type="radio" th:id="${re.id}+'star3'" th:name="${re.id}+'rating'" value="3"
+                               th:checked="${re.rating==3}?1:0"/>
+                        <label th:for="${re.id}+'star3'"></label>
+                        <input type="radio" th:id="${re.id}+'star2.5'" th:name="${re.id}+'rating'" value="2.5"
+                               th:checked="${re.rating==2.5}?1:0"/>
+                        <label th:for="${re.id}+'star2.5'" class="half"></label>
+                        <input type="radio" th:id="${re.id}+'star2'" th:name="${re.id}+'rating'" value="2"
+                               th:checked="${re.rating==2}?1:0"/>
+                        <label th:for="${re.id}+'star2'"></label>
+                        <input type="radio" th:id="${re.id}+'star1.5'" th:name="${re.id}+'rating'" value="1.5"
+                               th:checked="${re.rating==1.5}?1:0"/>
+                        <label th:for="${re.id}+'star1.5'" class="half"></label>
+                        <input type="radio" th:id="${re.id}+'star1'" th:name="${re.id}+'rating'" value="1"
+                               th:checked="${re.rating==1}?1:0"/>
+                        <label th:for="${re.id}+'star1'"></label>
+                        <input type="radio" th:id="${re.id}+'star0.5'" th:name="${re.id}+'rating'" value="0.5"
+                               th:checked="${re.rating==0.5}?1:0"/>
+                        <label th:for="${re.id}+'star0.5'" class="half"></label>
+                    </div>
+                    <span th:text="${re.rating}"></span>
+
+                    <p class="p-review" th:text="${re.review}"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <p class="like">You may like...</p>
+    <div class="like-container">
+        <div class="like-item" th:each="r :${related}" th:if="${!related.isEmpty()&&r.itemId!=item.itemId}">
+            <a th:href="@{/item/detail}+'/'+${r.itemId}">
+                <img class="like-img" th:src="${r.photoAddress}"/>
+            </a>
+        </div>
+
+        <div class="like-item" th:each="h :${hot}" th:if="${h.itemId!=item.itemId}">
+            <a th:href="@{/item/detail}+'/'+${h.itemId}">
+                <img class="like-img" th:src="${h.photoAddress}"/>
+            </a>
+        </div>
+
+    </div>
+    <div th:insert="~{footer::footer}"></div>
+</div>
+</body>
+<script>
+    var username = document.getElementById("customer_id").innerText;
+    fetch("http://localhost:18082/api/users/email/" + username, {
+        method: "GET"
+    }).then(res => res.json()).then(data => {
+        fetch("http://localhost:18082/api/cart/user/" + data.id, {
+            method: "GET"
+        }).then(res => res.json())
+            .then(data => {
+                document.getElementById("my-divright2").innerText = Object.keys(data.cartItems).length;
+                document.getElementById("my-divright2").style.display = "block";
+            }).catch();
+    }).catch(error => {
+        console.log(error)
+    });
+</script>
+</html>

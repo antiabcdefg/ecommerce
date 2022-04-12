@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" th:href="@{/favicon.ico}" type="image/x-icon"/>
+    <link href="/css/product_detail.css" th:href="@{/css/product_detail.css}" rel="stylesheet"/>
+    <link href="/css/order.css" th:href="@{/css/order.css}" rel="stylesheet"/>
+    <link href="/css/navi.css" th:href="@{/css/navi.css}" rel="stylesheet"/>
+    <link href="/css/footer.css" th:href="@{/css/footer.css}" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" rel="stylesheet"/>
+    <title>Review</title>
+</head>
+<body>
+<div class="container">
+    <div th:insert="~{navbar::navbar(false, true, false)}"></div>
+    <div class="item">
+        <img class="img-full2" th:src="${item.photoAddress}" th:alt="${item.name}"/>
+        <div class="item-content">
+            <h3 th:text="${item.name}"></h3>
+            <p th:text="'Description: '+${item.description}"></p>
+            <span>Price: </span><p class="price" th:text="${#numbers.formatInteger(item.price, 2, 'COMMA')}+' JPY (tax included)'"></p>
+            <span class="points">31 points(Double)</span>
+        </div>
+    </div>
+
+    <div class="review-content">
+        <form role="form" th:action="@{/item/review/refresh}" method="post">
+            <input th:value="${item.itemId}" type="hidden" name="itemId">
+            <input th:value="${orderId}" type="hidden" name="orderId">
+            <div class="rate">
+                <input type="radio" id="star5" name="rating" th:value="5" onclick="getRadioValue(this)"/>
+                <label for="star5"></label>
+                <input type="radio" id="star4.5" name="rating" th:value="4.5" onclick="getRadioValue(this)"/>
+                <label for="star4.5" class="half"></label>
+                <input type="radio" id="star4" name="rating" th:value="4" onclick="getRadioValue(this)"/>
+                <label for="star4"></label>
+                <input type="radio" id="star3.5" name="rating" th:value="3.5" onclick="getRadioValue(this)"/>
+                <label for="star3.5" class="half"></label>
+                <input type="radio" id="star3" name="rating" th:value="3" onclick="getRadioValue(this)"/>
+                <label for="star3"></label>
+                <input type="radio" id="star2.5" name="rating" th:value="2.5" onclick="getRadioValue(this)"/>
+                <label for="star2.5" class="half"></label>
+                <input type="radio" id="star2" name="rating" th:value="2" onclick="getRadioValue(this)"/>
+                <label for="star2"></label>
+                <input type="radio" id="star1.5" name="rating" th:value="1.5" onclick="getRadioValue(this)"/>
+                <label for="star1.5" class="half"></label>
+                <input type="radio" id="star1" name="rating" th:value="1" onclick="getRadioValue(this)"/>
+                <label for="star1"></label>
+                <input type="radio" id="star0.5" name="rating" th:value="0.5" onclick="getRadioValue(this)"/>
+                <label for="star0.5" class="half"></label>
+            </div>
+            <span id="post-review"></span>
+            <textarea class="review" th:value="${review.review}" name="review" placeholder="Write something..." required></textarea>
+            <button type="submit" class="sub-btn common_btn">Submit</button>
+        </form>
+    </div>
+    <div th:insert="~{footer::footer}"></div>
+</div>
+<script>
+    window.onload = function (e) {
+
+    }
+
+    function getRadioValue(obj) {
+        document.getElementById("post-review").innerText = obj.value;
+    }
+</script>
+</body>
+</html>

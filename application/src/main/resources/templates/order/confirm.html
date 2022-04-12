@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" th:href="@{/favicon.ico}" type="image/x-icon"/>
+    <link href="/css/order.css" th:href="@{/css/order.css}" rel="stylesheet">
+    <link href="/css/navi.css" th:href="@{/css/navi.css}" rel="stylesheet">
+    <link href="/css/cart.css" th:href="@{/css/cart.css}" rel="stylesheet">
+    <link href="/css/footer.css" th:href="@{/css/footer.css}" rel="stylesheet">
+    <title>Confirm your order</title>
+</head>
+<body>
+<div class="container">
+    <div th:insert="~{navbar::navbar(false, true, false)}"></div>
+    <div style="margin: 10px;display: block">
+        <h2>Confirm your order</h2>
+    </div>
+    <div class="whole-container">
+        <div class="item" th:each="item : ${order.getItems()}">
+            <img class="img-full" th:src="${item.photoAddress}" th:alt="${item.name}"/>
+            <div class="item-content">
+                <h2 th:text="${item.name}"></h2>
+                <p th:text="'Price: '+${#numbers.formatInteger(item.price, 2, 'COMMA')}+' JPY'"></p>
+                <p th:text="'Number: '+${item.quantity}"></p>
+                <p th:text="'Total Price: '+${#numbers.formatInteger(item.price*item.quantity, 2, 'COMMA')}+' JPY'"></p>
+            </div>
+        </div>
+        <div class="total">
+            <form role="form" th:action="@{/order/complete}" th:object="${order}" method="post">
+                <h2 th:text="'Subtotal: '+${#numbers.formatInteger(total, 1, 'COMMA')}+' JPY'"></h2>
+                <input type="hidden" th:field="*{id}"/>
+                <input th:value="${order.id}" type="hidden" name="id">
+                <button type="submit" class="common_btn">Confirm Order</button>
+            </form>
+        </div>
+    </div>
+    <div th:insert="~{footer::footer}"></div>
+</div>
+</body>
+</html>

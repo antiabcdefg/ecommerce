@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" th:href="@{/favicon.ico}" type="image/x-icon"/>
+    <link href="/css/login.css" th:href="@{/css/login.css}" rel="stylesheet">
+    <link href="/css/navi.css" th:href="@{/css/navi.css}" rel="stylesheet">
+    <title>Error</title>
+</head>
+<body>
+<div class="container">
+    <div th:insert="~{navbar::navbar(false,false,false)}"></div>
+    <h1 class="login">404 Not Found</h1>
+    <div class="standard">
+        <a th:href="@{/item/list}">
+            <button class="nav_btn common_btn">Return</button>
+        </a>
+    </div>
+</div>
+</body>
+</html>

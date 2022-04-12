@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" th:href="@{/favicon.ico}" type="image/x-icon"/>
+    <link href="/css/navi.css" th:href="@{/css/navi.css}" rel="stylesheet">
+    <link href="/css/order.css" th:href="@{/css/order.css}" rel="stylesheet">
+    <link href="/css/footer.css" th:href="@{/css/footer.css}" rel="stylesheet">
+    <title>Your profile</title>
+</head>
+<body>
+<div class="container">
+    <div th:insert="~{navbar::navbar(false, true, true)}"></div>
+    <div class="dui-container main">
+        <div class="user-container">
+            <hr class="hr-red">
+            <h3 class="order-title">Basic Information</h3>
+            <div class="user-content">
+                <span>Email: </span>
+                <a th:href="'mailto:'+${customer.email}">
+                    <span class="content-span" th:text="${customer.email}"></span>
+                </a>
+                <p>Password: ****** (Hidden)</p>
+                <p th:text="'First name: '+${customer.firstName}"></p>
+                <p th:text="'Last name: '+${customer.lastName}"></p>
+                <p th:text="'Zip code: '+${customer.zipCode}"></p>
+                <p th:text="'Address: '+${customer.address}"></p>
+                <span>Phone: </span>
+                <a th:href="'tel:'+${customer.phone}">
+                    <span class="content-span" th:text="${customer.phone}"></span>
+                </a>
+            </div>
+        </div>
+
+        <div class="order-content">
+            <hr class="hr-red">
+            <h3 class="order-title">Your Order History</h3>
+            <div th:if="${orders}" th:each="order : ${orders}">
+                <div class="order-container">
+                    <div class="order-left">
+                        <p th:text="${order.createdAt}"></p>
+                        <p th:text="'OrderId: '+${order.id}"></p>
+                        <p th:text="'Total: '+${totals.get(order.id)}"></p>
+
+                        <a th:if="${order.status}=='NEW'" th:href="'/application/order/confirm/'+${order.id}">
+                            <button class="small_btn">Continue to confirm</button>
+                        </a>
+                    </div>
+                    <div class="order-right">
+                        <div class="item-container" th:each="item : ${order.items}"
+                             th:onClick="'location.href=\'/application/item/detail/'+${item.itemId}+'\''">
+
+                            <img class="img-th" th:src="${item.photoAddress}" th:alt="${item.name}"/>
+                            <div class="item-content">
+                                <p th:text="${item.name}"></p>
+                                <p th:text="'Price: '+${item.price}"></p>
+                                <p th:text="'Quantity: '+${item.quantity}"></p>
+                            </div>
+
+                            <div class="item-operation">
+                                <a style="display: block;" th:href="@{/item/detail}+'/'+${item.itemId}">
+                                    <button class="bug-op">Buy again</button>
+                                </a>
+                                <a style="display: block;" th:href="@{/item/review}+'/'+${order.id}+'/'+${item.itemId}">
+                                    <button class="bug-op">Write review</button>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="order-empty" th:if="${orders.isEmpty()}">
+                <div class="no-order">You have no order, just to buy</div>
+                <div class="standard">
+                    <a th:href="@{/item/list}">
+                        <button class="nav_btn common_btn">Return</button>
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div th:insert="~{footer::footer}"></div>
+</div>
+</body>
+</html>

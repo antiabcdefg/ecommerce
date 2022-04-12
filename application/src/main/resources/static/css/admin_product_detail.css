@@ -1,0 +1,67 @@
+
+a {
+    color: inherit;
+    text-decoration: none
+}
+
+a:visited {
+    color: inherit;
+    text-decoration: none;
+}
+
+.cart-font {
+    padding-top: 4px;
+}
+
+.normal {
+    display: block;
+    line-height: 20px;
+}
+
+input {
+    height: 30px;
+    padding: 4px;
+    border-radius: 5px;
+    border: 0.5px solid #BF0000;
+}
+
+select {
+    padding: 4px;
+    border-radius: 5px;
+    border: 0.5px solid #BF0000;
+}
+
+.item {
+    width: 600px;
+    display: flex;
+    margin: 10px auto;
+    justify-content: center;
+}
+
+.img-full {
+    flex: 1;
+    margin: 10px;
+}
+
+.item-content2 {
+    margin: 15px 0px 10px 0px;
+    flex: 1;
+}
+
+h2 {
+    text-align: center;
+}
+
+table {
+    margin: 10px auto;
+}
+
+.img-item-th {
+    width: 275px;
+    height: 275px;
+}
+
+
+
+
+

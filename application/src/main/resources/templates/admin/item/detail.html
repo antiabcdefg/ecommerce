@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" th:href="@{/favicon.ico}" type="image/x-icon"/>
+    <link href="/css/order.css" th:href="@{/css/order.css}" rel="stylesheet">
+    <link href="/css/admin_product_detail.css" th:href="@{/css/admin_product_detail.css}" rel="stylesheet">
+    <link href="/css/navi.css" th:href="@{/css/navi.css}" rel="stylesheet">
+    <link href="/css/footer.css" th:href="@{/css/footer.css}" rel="stylesheet">
+    <title>Product details</title>
+</head>
+<body>
+<div class="container">
+    <div th:insert="~{navbar::navbar(true, true, true)}"></div>
+    <h2>Update Product Information</h2>
+    <form name="form" action="/admin/item/submit" th:action="@{/admin/item/submit}" th:object="${item}" method="post">
+        <table cellspacing="5" cellpadding="5" border="0">
+            <tbody>
+            <tr>
+                <td> Item ID</td>
+                <td><span th:text="${item.itemId}"></span>
+                    <input type="hidden" name="itemId" th:value="${item.itemId}"/>
+                </td>
+            </tr>
+            <th:block th:if="${item.createdAt != null}">
+                <tr>
+                    <td> Created at</td>
+                    <td><span th:text="${item.createdAt}"></span>
+                    </td>
+                </tr>
+            </th:block>
+            <tr>
+                <td> Item Name</td>
+                <td><input type="text" name="name" th:value="${item.name}"/></td>
+            </tr>
+            <tr>
+                <td> Description</td>
+                <td><input type="text" name="description" th:value="${item.description}"/></td>
+            </tr>
+            <tr>
+                <td> Photo Address</td>
+                <td><input type="text" name="photoAddress" th:value="${item.photoAddress}"/></td>
+            </tr>
+            <tr>
+                <td> Price</td>
+                <td><input type="number" size="6" name="price" min="0" th:value="${item.price}"/>円</td>
+            </tr>
+            <tr>
+                <td> Inventory Count</td>
+                <td><input type="number" size="6" name="inventoryCount" min="0" max="1000"
+                           th:value="${item.inventoryCount}"/></td>
+            </tr>
+            <tr>
+                <td> Enabled?</td>
+                <td>
+                    <select name="enabled" th:field="*{enabled}">
+                        <option value="1">Yes</option>
+                        <option value="0">No</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td><input class="common_btn" type="submit" value="Submit"></td>
+            </tr>
+            </tbody>
+        </table>
+
+    </form>
+    <div th:insert="~{footer::footer}"></div>
+</div>
+</body>
+</html>
